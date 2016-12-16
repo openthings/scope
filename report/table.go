@@ -55,10 +55,22 @@ func (node Node) ExtractTable(template TableTemplate) (rows map[string]string, t
 	return rows, truncationCount
 }
 
+type Column struct {
+	ID       string `json:"id"`
+	Label    string `json:"label"`
+	DataType string `json:"dataType"`
+}
+
+type Row struct {
+	Entry map[string]string `json:"entry"`
+}
+
 // Table is the type for a table in the UI.
 type Table struct {
 	ID              string        `json:"id"`
 	Label           string        `json:"label"`
+	Type            string        `json:"type"`
+	Columns         []Column      `json:"columns"`
 	Rows            []MetadataRow `json:"rows"`
 	TruncationCount int           `json:"truncationCount,omitempty"`
 }
@@ -74,6 +86,7 @@ func (t Table) Copy() Table {
 	result := Table{
 		ID:    t.ID,
 		Label: t.Label,
+		Type:  t.Type,
 		Rows:  make([]MetadataRow, 0, len(t.Rows)),
 	}
 	for _, row := range t.Rows {
@@ -94,6 +107,7 @@ type TableTemplate struct {
 	ID     string `json:"id"`
 	Label  string `json:"label"`
 	Prefix string `json:"prefix"`
+	Type   string `json:"type"`
 	// FixedRows indicates what predetermined rows to render each entry is
 	// indexed by the key to extract the row value is mapped to the row
 	// label
@@ -130,6 +144,7 @@ func (t TableTemplate) Merge(other TableTemplate) TableTemplate {
 		ID:        max(t.ID, other.ID),
 		Label:     max(t.Label, other.Label),
 		Prefix:    max(t.Prefix, other.Prefix),
+		Type:      max(t.Type, other.Type),
 		FixedRows: fixedRows,
 	}
 }
@@ -145,6 +160,7 @@ func (t TableTemplates) Tables(node Node) []Table {
 		table := Table{
 			ID:              template.ID,
 			Label:           template.Label,
+			Type:            template.Type,
 			Rows:            []MetadataRow{},
 			TruncationCount: truncationCount,
 		}

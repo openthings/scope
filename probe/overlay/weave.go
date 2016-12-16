@@ -104,6 +104,7 @@ var (
 			ID:     WeaveConnectionsTablePrefix,
 			Label:  "Connections",
 			Prefix: WeaveConnectionsTablePrefix,
+			Type:   "real-table",
 		},
 	}
 )
