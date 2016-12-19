@@ -35,15 +35,17 @@ IMAGE_TAG=$(shell ./tools/image-tag)
 all: $(SCOPE_EXPORT)
 
 $(DOCKER_DISTRIB):
-	curl -o $(DOCKER_DISTRIB) $(DOCKER_DISTRIB_URL)
+#	curl -o $(DOCKER_DISTRIB) $(DOCKER_DISTRIB_URL)
+	echo "Get docker base tgz."
 
 docker/weave:
-	curl -L git.io/weave -o docker/weave
-	chmod u+x docker/weave
+	echo "Install weave,ignored..."
+	#curl -L git.io/weave -o docker/weave
+	#chmod u+x docker/weave
 
 $(SCOPE_EXPORT): $(SCOPE_EXE) $(DOCKER_DISTRIB) docker/weave $(RUNSVINIT) docker/Dockerfile docker/demo.json docker/run-app docker/run-probe docker/entrypoint.sh
 	cp $(SCOPE_EXE) $(RUNSVINIT) docker/
-	cp $(DOCKER_DISTRIB) docker/docker.tgz
+	#cp $(DOCKER_DISTRIB) docker/docker.tgz
 	$(SUDO) docker build -t $(SCOPE_IMAGE) docker/
 	$(SUDO) docker tag $(SCOPE_IMAGE) $(SCOPE_IMAGE):$(IMAGE_TAG)
 	$(SUDO) docker save $(SCOPE_IMAGE):latest > $@

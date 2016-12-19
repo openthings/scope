@@ -112,13 +112,12 @@ type probeFlags struct {
 }
 
 type appFlags struct {
-	window         time.Duration
-	listen         string
-	stopTimeout    time.Duration
-	logLevel       string
-	logPrefix      string
-	logHTTP        bool
-	logHTTPHeaders bool
+	window      time.Duration
+	listen      string
+	stopTimeout time.Duration
+	logLevel    string
+	logPrefix   string
+	logHTTP     bool
 
 	weaveEnabled   bool
 	weaveAddr      string
@@ -299,7 +298,6 @@ func main() {
 	flag.StringVar(&flags.app.logLevel, "app.log.level", "info", "logging threshold level: debug|info|warn|error|fatal|panic")
 	flag.StringVar(&flags.app.logPrefix, "app.log.prefix", "<app>", "prefix for each log line")
 	flag.BoolVar(&flags.app.logHTTP, "app.log.http", false, "Log individual HTTP requests")
-	flag.BoolVar(&flags.app.logHTTPHeaders, "app.log.httpHeaders", false, "Log HTTP headers. Needs app.log.http to be enabled.")
 
 	flag.StringVar(&flags.app.weaveAddr, "app.weave.addr", app.DefaultWeaveURL, "Address on which to contact WeaveDNS")
 	flag.StringVar(&flags.app.weaveHostname, "app.weave.hostname", app.DefaultHostname, "Hostname to advertise in WeaveDNS")
@@ -344,7 +342,7 @@ func main() {
 	flags.probe.noApp = *noApp || *probeOnly
 
 	// Special case for #1191, check listen address is well formed
-	_, port, err := net.SplitHostPort(flags.app.listen)
+	_, _, err := net.SplitHostPort(flags.app.listen)
 	if err != nil {
 		log.Fatalf("Invalid value for -app.http.address: %v", err)
 	}
@@ -365,7 +363,7 @@ func main() {
 				args = append(args, defaultServiceHost)
 			}
 		} else if !flags.probe.noApp {
-			args = append(args, fmt.Sprintf("localhost:%s", port))
+			args = append(args, fmt.Sprintf("localhost:%d", xfer.AppPort))
 		}
 		args = append(args, flag.Args()...)
 		if !dryRun {
