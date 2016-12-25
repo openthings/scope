@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"github.com/weaveworks/scope/app"
 	"github.com/weaveworks/scope/common/xfer"
 	"github.com/weaveworks/scope/probe/appclient"
+	"github.com/weaveworks/scope/probe/host"
 	"github.com/weaveworks/scope/probe/kubernetes"
 	"github.com/weaveworks/scope/render"
 	"github.com/weaveworks/weave/common"
@@ -214,6 +216,18 @@ func logCensoredArgs() {
 	log.Infof("command line args:%s", prettyPrintedArgs)
 }
 
+func makeBaseCheckpointFlags() map[string]string {
+	release, _, err := host.GetKernelReleaseAndVersion()
+	if err != nil {
+		release = "unknown"
+	}
+	return map[string]string{
+		// Inconsistent key (using a dash) to match Weave Net
+		"kernel-version": release,
+		"os":             runtime.GOOS,
+	}
+}
+
 func main() {
 	var (
 		flags                            = flags{}
@@ -363,7 +377,13 @@ func main() {
 				args = append(args, defaultServiceHost)
 			}
 		} else if !flags.probe.noApp {
+<<<<<<< HEAD
 			args = append(args, fmt.Sprintf("localhost:%d", xfer.AppPort))
+=======
+			// We hardcode 127.0.0.1 instead of using localhost
+			// since it leads to problems in exotic DNS setups
+			args = append(args, fmt.Sprintf("127.0.0.1:%s", port))
+>>>>>>> weaveworks/master
 		}
 		args = append(args, flag.Args()...)
 		if !dryRun {
