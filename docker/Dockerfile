@@ -1,6 +1,10 @@
 #FROM alpine:3.3
 #FROM aarch64/alpine:edge
+<<<<<<< HEAD
 FROM openthings/ubuntu-rock:ARM64
+=======
+FROM openthing/ubuntu-rock:ARM64
+>>>>>>> master
 
 MAINTAINER Weaveworks Inc <help@weave.works>
 LABEL works.weave.role=system

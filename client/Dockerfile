@@ -1,4 +1,5 @@
 #FROM node:6.9.0
+<<<<<<< HEAD
 #FROM openthings/ubuntu-nodejs:ARM64
 FROM openthings/ubuntu-rock:ARM64
 
@@ -79,6 +80,18 @@ RUN 	. "/root/.nvm/nvm.sh" && \
 	npm install minimatch openssl semver
 
 COPY package.json /home/weave/
+=======
+FROM aarch64/ubuntu-nodejs:ARM64
+
+WORKDIR /home/weave
+
+COPY package.json /home/weave/
+
+ENV NPM_CONFIG_LOGLEVEL=warn NPM_CONFIG_PROGRESS=false
+
+RUN npm config set proxy=http://192.168.1.88:9999 && npm install
+
+>>>>>>> master
 COPY webpack.local.config.js webpack.production.config.js server.js .babelrc .eslintrc .eslintignore /home/weave/
 
 RUN	. "/root/.nvm/nvm.sh" && \
