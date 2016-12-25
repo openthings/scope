@@ -1,3 +1,13 @@
+# Error
+
+## 2016-12-25, run make
+* Arch: ARM64
+* Hardware: 96Boards
+* CPU: Snapdragon 410C
+* OS: Debian 
+* Source: https://github.com/openthings/scope, branch ARM64
+
+```
 docker run --rm -ti \
 	-v /media/linaro/zdata/src/github.com/openthings/scope:/go/src/github.com/weaveworks/scope \
 	-v /media/linaro/zdata/src/github.com/openthings/scope/.pkg:/go/pkg \
@@ -14,4 +24,4 @@ make: *** [render/detailed/detailed.codecgen.go] Error 2
 make: Leaving directory '/go/src/github.com/weaveworks/scope'
 Makefile:67: recipe for target 'prog/scope' failed
 make: *** [prog/scope] Error 2
-
+```
