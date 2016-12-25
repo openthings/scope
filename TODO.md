@@ -4,7 +4,7 @@
 * Arch: ARM64
 * Hardware: 96Boards
 * CPU: Snapdragon 410C
-* OS: Debian 
+* OS: Linaro based debian 
 * Source: https://github.com/openthings/scope, branch ARM64
 
 ```
